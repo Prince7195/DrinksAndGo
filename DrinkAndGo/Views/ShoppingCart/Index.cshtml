@@ -14,41 +14,47 @@
             </tr>
         </thead>
         <tbody>
-@foreach (var line in Model.ShoppingCart.ShoppingCartItems)
+            @foreach (var line in Model.ShoppingCart.ShoppingCartItems)
             {
+                <tr>
+                    <td class="text-center">@line.Amount</td>
+                    <td class="text-left">@line.Drink.Name</td>
+                    <td class="text-right">@line.Drink.Price.ToString("c")</td>
+                    <td class="text-right">
+                        @((line.Amount * line.Drink.Price).ToString("c"))
+                    </td>
+                    <td class="text-center">
+                        <a class="fa fa-trash text-danger remove" asp-controller="ShoppingCart" asp-action="RemoveFromShoppingCart" asp-route-drinkId="@line.Drink.DrinkId"></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
             <tr>
-                <td class="text-center">t</td>
-                <td class="text-left">e</td>
-                <td class="text-right">)</td>
+                <td colspan="3" class="text-right">Total:</td>
                 <td class="text-right">
-                     @((line.Amount * line.Drink.Price).ToString("c"))
+                    @Model.ShoppingCartTotal.ToString("c")
                 </td>
-                <td class="text-center"><a class="glyphicon glyphicon-remove text-danger remove" asp-controller="ShoppingCart" asp-action="RemoveFromShoppingCart" asp-route-drinkId="@line.Drink.DrinkId"></a></td>
             </tr>
-}
-</tbody>
-<tfoot>
-    <tr>
-        <td colspan="3" class="text-right">Total:</td>
-        <td class="text-right">
-@Model.ShoppingCartTotal.ToString("c")
-</td>
-</tr>
-</tfoot>
-</table>
+        </tfoot>
+    </table>
 
-<div class="text-right">
-    <div class="btn-group ">
-        <a class="btn btn-success" asp-controller="Order" asp-action="Checkout">Check out</a>
-        <a class="btn-group">
-            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                Add more drinks<span class="caret"></span>
+    <div class="text-right">
+        <div class="btn-group ">
+            <a class="btn btn-success" asp-controller="Order" asp-action="Checkout">Check out</a>
+            <a class="btn-group dropdown">
+                <a class="nav-link dropdown-toggle" asp-controller="Drink"
+                   asp-action="Index" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add more drinks<b class="caret"></b>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                    <a class="dropdown-item" asp-controller="Drink" asp-action="List"
+                       asp-route-category="Alcoholic">Alcoholic</a>
+                    <a class="dropdown-item" asp-controller="Drink" asp-action="List"
+                       asp-route-category="Non-alcoholic">Non-alcoholic</a>
+                </div>
             </a>
-            <ul class="dropdown-menu" role="menu">
-                <li><a asp-controller="Drink" asp-action="List" asp-route-category="Alcoholic">Alcoholic</a></li>
-                <li><a asp-controller="Drink" asp-action="List" asp-route-category="Non-alcoholic">Non Alcoholic</a></li>
-            </ul>
-        </a>
+        </div>
     </div>
 </div>
-</div>
+
+
